@@ -14,18 +14,22 @@ from sklearn.metrics import accuracy_score, classification_report
 
 # **Introduction**
 
-st.title("🎵 EDM Genre Analysis & Classification")
+st.title("🎵Is It Techno or House? Let’s End the Debate (With Science!)")
 st.image("cover_image.png", use_container_width=True)
 
-st.markdown("### The Evolution and Classification of EDM")
 
-st.write("""Electronic Dance Music (EDM) started in small, hidden clubs and has grown into a worldwide sensation, with countless styles—from the steady beats of Techno to the joyful rhythms of House, the gritty bass of Dubstep, and the soaring melodies of Trance. But here's the big question: How do these genres actually sound different from each other?""")
-st.write("""You know how a Techno track feels like a futuristic machine pumping energy, while House makes you want to dance with its warm, soulful vibes? Or why Dubstep hits you like a wall of sound, but Trance feels like floating on clouds? Musicians might say, “It's all about the feeling,” but we wanted to dig deeper. Instead of just guessing, we're using science and technology to find answers.""")
-st.write("""Think of it like this: Imagine taking apart a song the way you would take apart a clock. We are looking at the 'pieces' of sound—like how high or low the notes are, how the energy changes over time, and how the layers of sound fit together. For example, maybe Dubstep sounds aggressive because it has wild jumps between deep bass and sharp highs, while Trance stays smooth with long, glowing melodies. By measuring these details, we can finally say, “Here is exactly what makes House'House' and Dubstep 'Dubstep'!""")
-st.write("This story isn\'t just for scientists—it's for anyone who loves music. By understanding the “recipe” of a genre, producers can create better tracks, fans can discover music they'll love, and we can all appreciate the magic behind the beats. Let's break it down together—no fancy words, just the cool science behind the music we adore.")
+st.write("""One day, you're minding your own business, scrolling through the internet, when suddenly—bam!—you find yourself in a heated argument. Some random stranger insists that the track you're vibing to is definitely Techno, but you know it’s House. Or is it? Panic sets in. What if your listening history isn't impressive enough to back up your claim? What if you're about to get ratioed into oblivion?""")
 
+st.write("""But wait—before you start second-guessing your entire music taste, let's take a step back. EDM is a vast, wonderfully chaotic world where genres blend, mutate, and sometimes defy definition altogether. Some tracks sit neatly in one category, while others laugh in the face of classification. So, instead of relying on vibes alone, why not fight back with cold, hard data?""")
 
+st.write("""Welcome to the ultimate breakdown of what makes House House, Techno Techno, and Dubstep... well, an earthquake with bass. We’re diving deep into spectral features, machine learning, and genre clustering to uncover the science behind your favorite beats. By the end of this, not only will you have an arsenal of data-driven arguments at your disposal, but you might even discover why some genres refuse to be put into neat little boxes.""")
 
+# **Chosen of Dataset
+
+st.title("Dataset Source Explanation")
+st.write("For this project, we are using the EDM Music Genres Dataset from Kaggle, originally uploaded by Sivadithiyan (https://www.kaggle.com/datasets/sivadithiyan/edm-music-genres). This dataset is sourced from YouTube music mixes and contains 16 different electronic music genres (such as Techno, House, Trance, etc.). Each genre is represented by 2,500 three-second audio clips, evenly split into 2,000 for training and 500 for testing. The dataset was processed using Ableton, extracting spectral features, MFCCs, Chroma, Tonnetz, and other audio characteristics for music classification, genre analysis, and machine learning applications.")
+st.write(" However, because the full dataset is very large, using it directly might lead to performance issues (or, in extreme cases, turn your CPU into an expensive toaster). To make the program run smoothly on most machines, we use a smaller dataset that randomly selected 10% subset of the training data.")
+st.caption("If you have a powerful computer (and don’t mind your fans sounding like a jet engine), you can swap out train_sample.csv for the original train_data_final.csv in the code. The program is designed to handle this switch seamlessly.")
 # **Genre Distribution**
 
 st.header("🎶 Genre Distribution")
@@ -35,11 +39,11 @@ fig = px.bar(df["label"].value_counts(), labels={'index': 'Genre', 'value': 'Cou
 st.plotly_chart(fig)
 
 st.caption("What are those? To me, these are just a bunch of bars that look almost the same height.")
-st.write("Here, we have a bar chart showdown of EDM genres, where each genre is flexing its musical muscles to prove who dominates the dataset! Think of it like a popularity contest at a massive festival—except instead of fans, we’re counting tracks.Looking at the chart, it’s clear that no single genre is stealing the spotlight—most genres have roughly the same number of tracks. This means we’ve got a balanced dataset, so every genre gets a fair shot at being analyzed!")
+st.write("Here, we have a bar chart showdown of EDM genres, where each genre is flexing its musical muscles to prove who dominates the dataset! Think of it like a popularity contest at a massive festival—except instead of fans, we’re counting tracks.Looking at the chart, it’s clear that no single genre is stealing the spotlight—most genres have roughly the same number of tracks. This means we’ve got a balanced dataset, so every genre gets a fair shot at being analyzed.")
 st.caption("Sounds interesting. But what if some of them is much taller than others?")
 st.write("If one genre had way more tracks than the others, our analysis might be biased, like having a DJ that only plays House music all night (that would be so boring). Since the dataset is evenly spread, our machine learning models can learn fairly from all genres—no favoritism here! If your favorite genre is at the bottom of the chart, don’t worry—it’s about quality, not quantity.")
 st.caption("Well, as an Ambient fan I'm glad to hear this.")
-st.write("What’s Next? Now that we know how our dataset is structured, let’s dig deeper—what makes these genres sound different? Stay tuned for the spectral feature showdown!")
+st.write("What’s Next? Now that we know how our dataset is structured, let’s dig deeper—what makes these genres sound different?")
 
 
 # **Feature Analysis**
@@ -59,7 +63,7 @@ fig = px.box(df, x="label", y=selected_feature, title=f"{selected_feature} by Ge
 st.plotly_chart(fig)
 
 st.caption("I'm only seeing a bunch of boxes, please explain")
-st.write("Think of this box plot as a musical talent show—each genre steps onto the stage, showing off how its spectral feature varies. Some genres are consistent performers, while others have wildly experimental tracks that don’t fit the norm!")
+st.write("Think of this box plot as a musical talent show—each genre steps onto the stage, showing off how its spectral feature varies. Some genres are consistent performers, while others have wildly experimental tracks that don’t fit the norm.")
 ("Here's how to read the stage performance:")
 ("""The box represents the middle 50% of values—this is where most tracks in a genre hang out. The line inside the box is the median—the "average performer" for that genre. The whiskers show the full range of normal values—stretching their arms out to show flexibility. Dots outside the whiskers? These are the rebels—tracks that push genre boundaries and break expectations!""")
 ("Taking Root Mean Square Energy (RMSE) as an example, it measures the loudness fluctuations within a track. A higher RMSE generally indicates a track with punchy, dynamic energy, while a lower RMSE suggests a softer, more consistent sound. If we click on the bar and take a closer look at the selected spectral feature rmse_mean and see how different genres perform, we can find out that Phonk is like that contestant who can do everything from opera to rap—it has a huge range of values, meaning tracks in this genre vary a lot in spectral characteristics. Lofi & Psytrance are the disciplined ones—their values are tightly packed, meaning these genres have a consistent sound that artists stick to. Dubstep & Ambient have some rule-breakers—those outliers could be experimental tracks or hybrids that mix with other genres.")
@@ -197,7 +201,7 @@ else:
     st.warning("⚠️ Train the model first before detecting imposters.")
 
 if "model" in globals():
-    st.write("You should be seeing a chart that looks like the PCA result, but with less Skittles. ")
+    st.caption("You should be seeing a chart that looks like the PCA result, but with less Skittles. ")
     st.write("In this chart, we're detecting imposters—tracks that don’t quite fit into their assigned genre. Think of it like a costume party where everyone is dressed as their favorite genre, but some guests clearly didn’t read the dress code.")
     st.write("Each dot represents a track, and their positions are determined by their spectral characteristics. Most dots cluster together in genre-based groups, but some tracks are way off the expected region. These misfits, the ones that stray too far from their genre’s usual neighborhood, are flagged as potential outliers (imposters).")
     st.write("Why are they imposters?"
@@ -210,9 +214,14 @@ if "model" in globals():
 # **Conclusion**
 st.header("In All Words...What Did We Learn?")
 st.write("""
-EDM has always been a genre in motion—constantly evolving, blending influences, and defying rigid classification.
-Throughout this data story, we’ve unraveled the patterns hidden in sound, from spectral fingerprints that shape a genre’s identity to machine learning models that attempt to categorize (and sometimes misjudge) the fluid nature of music. 
-Yet, rather than forcing music into fixed boundaries, what we’ve really uncovered is the complexity of creative expression—how genres overlap, how outliers emerge, and how even the most structured beats can break the mold.
-Producers can use these insights to refine their sound, understanding how spectral properties define energy, warmth, or aggression. Listeners, too, can explore EDM in new ways, tracing the connections between their favorite styles and uncovering unexpected similarities. More broadly, as AI and data-driven tools become increasingly integrated into music production, studies like this can help shape how we define, recommend, and even create music in the future.
-But perhaps the most important takeaway is that music will always resist being neatly categorized. Just like the anomalies in our visualizations, innovation thrives in the unexpected—those tracks that blur genres, challenge norms, and redefine what EDM can be.                           
+EDM has never been about fitting into neat little boxes—it thrives on evolution, fusion, and defiance of strict classification.
+Throughout this data-driven journey, we’ve uncovered the hidden patterns in sound, from spectral fingerprints that give each genre its unique identity to machine learning models that try (and sometimes hilariously fail) to categorize music into rigid labels. But in the end, what we’ve really revealed is the illusion of fixed genres.
+Genres in EDM are more like guidelines than rules—overlapping, borrowing, and constantly reshaping themselves. What sounds like House today might be labeled Future Garage tomorrow, and what was once dismissed as "just noise" could define the next big movement. Producers can use spectral insights to refine their sound, nudging their tracks toward a particular vibe—but that doesn’t mean the music itself follows the rules. Listeners, too, can explore EDM beyond labels, discovering that their favorite "Techno" track might have more in common with Psytrance than they thought.
+But perhaps the most important takeaway is that music will always resist being neatly categorized. Just like the imposters in our visualizations, innovation thrives in the unexpected—those tracks that blur genres, challenge norms, and redefine what EDM can be. 
+
 """)
+
+st.header("References")
+st.write("""Banitalebi-Dehkordi, Mehdi Amin. "Music Genre Classification Using Spectral Analysis and Sparse Representation of the Signals. https://arxiv.org/abs/1803.04652""")
+st.write("""Fedden, Leon. "Comparative Audio Analysis With Wavenet, MFCCs, UMAP, t-SNE and PCA." Medium, 20 Nov. 2017. https://medium.com/%40LeonFedden/comparative-audio-analysis-with-wavenet-mfccs-umap-t-sne-and-pca-cb8237bfce2f""")
+st.write("""Varma, Aastha. "Dimensionality Reduction: PCA, t-SNE, and UMAP." Medium, 14 July 2024. https://medium.com/%40aastha.code/dimensionality-reduction-pca-t-sne-and-umap-41d499da2df2""")
